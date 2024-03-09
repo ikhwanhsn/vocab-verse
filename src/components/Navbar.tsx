@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center h-16 px-80 bg-black">
+    <nav className="flex justify-between items-center h-16 px-24 bg-black">
       <Link href="/" className="text-2xl font-bold text-white">
         VocabVerse
       </Link>
