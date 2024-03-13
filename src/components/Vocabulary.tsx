@@ -3,39 +3,14 @@
 import { GoArrowSwitch } from "react-icons/go";
 import { IoShuffleOutline } from "react-icons/io5";
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrClearOption, GrClear } from "react-icons/gr";
 import { RiEdit2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
-
-const vocabs = [
-  {
-    id: 1,
-    english: "first",
-    indonesian: "pertama",
-  },
-  {
-    id: 2,
-    english: "second",
-    indonesian: "kedua",
-  },
-  {
-    id: 3,
-    english: "third",
-    indonesian: "ketiga",
-  },
-  {
-    id: 4,
-    english: "fourth",
-    indonesian: "keempat",
-  },
-  {
-    id: 5,
-    english: "fifth",
-    indonesian: "kelima",
-  },
-];
+import { fetcher } from "@/libs/swr/fetcher";
+import useSWR from "swr";
+import { useRouter } from "next/navigation";
 
 function shuffleArray(array: any) {
   function randomSort() {
@@ -46,12 +21,20 @@ function shuffleArray(array: any) {
 }
 
 const Vocabulary = () => {
-  const [dataVocab, setDataVocab] = useState(vocabs);
+  const router = useRouter();
+  const [dataVocab, setDataVocab] = useState([]);
+  const [idEdit, setIdEdit] = useState("");
   const [isMainEnglish, setIsMainEnglish] = useState(true);
   const [isHideAll, setIsHideAll] = useState(true);
   const [isHideAction, setIsHideAction] = useState(true);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isAddActive, setIsAddActive] = useState(false);
+  const [isEditActive, setIsEditActive] = useState(false);
+  const [valueEnglishAdd, setValueEnglishAdd] = useState("");
+  const [valueIndonesianAdd, setValueIndonesianAdd] = useState("");
+  const [newEnglish, setNewEnglish] = useState("");
+  const [newIndonesian, setNewIndonesian] = useState("");
+  const { data, error, isLoading } = useSWR("/api/vocabs", fetcher);
   const hideAll = () => {
     setIsHideAll(!isHideAll);
   };
@@ -64,6 +47,80 @@ const Vocabulary = () => {
     const data = shuffleArray(dataVocab);
     setDataVocab(data);
   };
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const added = await fetch("http://localhost:3000/api/vocabs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: "1",
+        english: valueEnglishAdd,
+        indonesian: valueIndonesianAdd,
+      }),
+    });
+    if (added) {
+      alert("Vocab added");
+    } else {
+      alert("Failed to added");
+    }
+    setValueEnglishAdd("");
+    setValueIndonesianAdd("");
+    router.refresh();
+  };
+  const deleteVocab = async (id: string) => {
+    const deleted = await fetch(`http://localhost:3000/api/vocabs?id=${id}`, {
+      method: "DELETE",
+    });
+    if (deleted) {
+      alert("Vocabs deleted");
+    } else {
+      alert("Failed to deleted");
+    }
+    router.refresh();
+  };
+  const handleEdit = async (id: string) => {
+    setIsAddActive(false);
+    setIsEditActive(true);
+    const res = await fetch(`http://localhost:3000/api/vocabs/${id}`, {
+      method: "GET",
+    });
+    if (res.ok) {
+      const { vocab } = await res.json();
+      setIdEdit(vocab._id);
+      setNewEnglish(vocab.english);
+      setNewIndonesian(vocab.indonesian);
+    }
+  };
+  const handleEditSubmit = async (e: any) => {
+    e.preventDefault();
+    const res = await fetch(`http://localhost:3000/api/vocabs/${idEdit}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: "1",
+        newEnglish,
+        newIndonesian,
+      }),
+    });
+    if (res.ok) {
+      alert("Vocab updated");
+    } else {
+      alert("Failed to updated");
+    }
+    setIsEditActive(false);
+    router.refresh();
+  };
+
+  useEffect(() => {
+    if (data) {
+      setDataVocab(data);
+    }
+  }, [data]);
+
   return (
     <main className="w-2/5 rounded-md mx-auto text-black bg-white pt-5 py-3 px-5 text-lg">
       <section className="flex justify-between items-center font-bold">
@@ -80,7 +137,10 @@ const Vocabulary = () => {
         <aside className="space-x-2">
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
-            onClick={() => setIsAddActive(!isAddActive)}
+            onClick={() => {
+              setIsEditActive(false);
+              setIsAddActive(!isAddActive);
+            }}
           >
             <IoMdAdd size={20} />
           </button>
@@ -94,8 +154,8 @@ const Vocabulary = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
             onClick={() => hideAll()}
           >
-            {!isHideAll && <IoMdEye size={20} />}
-            {isHideAll && <IoMdEyeOff size={20} />}
+            {isHideAll && <IoMdEye size={20} />}
+            {!isHideAll && <IoMdEyeOff size={20} />}
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
@@ -107,32 +167,72 @@ const Vocabulary = () => {
         </aside>
       </section>
       <hr className="my-3" />
+      {/* ===== ADD VOCAB ===== */}
       {isAddActive && (
-        <section className="mb-3 flex flex-row gap-1">
+        <form
+          className="mb-3 flex flex-row gap-1 text-base"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             name="english"
             id="english"
             placeholder="English"
-            className="border py-1 px-3 rounded-md w-48"
+            value={valueEnglishAdd}
+            onChange={(e) => setValueEnglishAdd(e.target.value)}
+            className="border py-2 px-3 rounded-md w-48"
           />
           <input
             type="text"
             name="indonesian"
             id="indonesian"
             placeholder="Indonesian"
-            className="border py-1 px-3 rounded-md w-48"
+            value={valueIndonesianAdd}
+            onChange={(e) => setValueIndonesianAdd(e.target.value)}
+            className="border py-2 px-3 rounded-md w-48"
           />
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded w-full">
             Add
           </button>
-        </section>
+        </form>
       )}
-      {dataVocab.length === 0 && <p className="text-center">No Data</p>}
+      {isEditActive && (
+        <form
+          className="mb-3 flex flex-row gap-1 text-base"
+          onSubmit={handleEditSubmit}
+        >
+          <input
+            type="text"
+            name="english"
+            id="english"
+            placeholder="English"
+            value={newEnglish}
+            onChange={(e) => setNewEnglish(e.target.value)}
+            className="border py-2 px-3 rounded-md w-48"
+          />
+          <input
+            type="text"
+            name="indonesian"
+            id="indonesian"
+            placeholder="Indonesian"
+            value={newIndonesian}
+            onChange={(e) => setNewIndonesian(e.target.value)}
+            className="border py-2 px-3 rounded-md w-48"
+          />
+          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-2 rounded w-full">
+            Edit
+          </button>
+        </form>
+      )}
+      {dataVocab.length === 0 && !isLoading && (
+        <p className="text-center text-base">No Data</p>
+      )}
+      {isLoading && <p className="text-center text-base">Loading...</p>}
       {dataVocab.length > 0 &&
         dataVocab.map((vocab: any) => {
           return (
             <section
+              key={vocab._id}
               className={`grid gap-3 items-center mb-1 ${
                 isHideAction ? "grid-cols-2" : "grid-cols-3"
               }`}
@@ -159,10 +259,16 @@ const Vocabulary = () => {
               {isHideAll && "*****"}
               {!isHideAction && (
                 <aside className="flex gap-1 w-fit ml-auto">
-                  <button className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-1 px-2 rounded h-fit w-fit">
+                  <button
+                    className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-1 px-2 rounded h-fit w-fit"
+                    onClick={() => handleEdit(vocab._id)}
+                  >
                     <RiEdit2Line size={15} />
                   </button>
-                  <button className="bg-red-400 hover:bg-red-500 text-white font-bold py-1 px-2 rounded h-fit w-fit">
+                  <button
+                    className="bg-red-400 hover:bg-red-500 text-white font-bold py-1 px-2 rounded h-fit w-fit"
+                    onClick={() => deleteVocab(vocab._id)}
+                  >
                     <AiOutlineDelete size={15} />
                   </button>
                 </aside>
