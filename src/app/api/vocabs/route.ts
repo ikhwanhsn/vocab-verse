@@ -17,11 +17,16 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: any) {
   try {
     await connectMongoDB();
-    const vocabs = await Vocab.find();
-    if (vocabs) {
+    const { nextUrl } = request;
+    const page = nextUrl.searchParams.get("page");
+    const limit = nextUrl.searchParams.get("limit");
+    const skip = (page - 1) * limit;
+    const vocabs = await Vocab.find().skip(skip).limit(limit);
+
+    if (vocabs.length > 0) {
       return NextResponse.json(vocabs);
     } else {
       return NextResponse.json(
@@ -31,6 +36,10 @@ export async function GET() {
     }
   } catch (error) {
     console.log(error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 

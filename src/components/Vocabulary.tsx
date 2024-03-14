@@ -11,6 +11,11 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
+import { handleSubmitVocab } from "@/services/handleSubmitVocab";
+import { handleDeleteVocab } from "@/services/handleDeleteVocab";
+import { handleEditVocab } from "@/services/handleEditVocab";
+import { handleEditSubmitVocab } from "@/services/handleEditSubmitVocab";
+import Pagination from "./Pagination";
 
 function shuffleArray(array: any) {
   function randomSort() {
@@ -34,7 +39,11 @@ const Vocabulary = () => {
   const [valueIndonesianAdd, setValueIndonesianAdd] = useState("");
   const [newEnglish, setNewEnglish] = useState("");
   const [newIndonesian, setNewIndonesian] = useState("");
-  const { data, error, isLoading } = useSWR("/api/vocabs", fetcher);
+  const [pageActive, setPageActive] = useState([1, 10]);
+  const { data, error, isLoading } = useSWR(
+    `/api/vocabs?page=${pageActive[0]}&limit=${pageActive[1]}`,
+    fetcher
+  );
   const hideAll = () => {
     setIsHideAll(!isHideAll);
   };
@@ -47,72 +56,25 @@ const Vocabulary = () => {
     const data = shuffleArray(dataVocab);
     setDataVocab(data);
   };
-  const handleSubmit = async (e: any) => {
+  const submitAdd = async (e: any) => {
     e.preventDefault();
-    const added = await fetch("http://localhost:3000/api/vocabs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: "1",
-        english: valueEnglishAdd,
-        indonesian: valueIndonesianAdd,
-      }),
-    });
-    if (added) {
-      alert("Vocab added");
-    } else {
-      alert("Failed to added");
-    }
-    setValueEnglishAdd("");
-    setValueIndonesianAdd("");
-    router.refresh();
-  };
-  const deleteVocab = async (id: string) => {
-    const deleted = await fetch(`http://localhost:3000/api/vocabs?id=${id}`, {
-      method: "DELETE",
-    });
-    if (deleted) {
-      alert("Vocabs deleted");
-    } else {
-      alert("Failed to deleted");
-    }
-    router.refresh();
-  };
-  const handleEdit = async (id: string) => {
-    setIsAddActive(false);
-    setIsEditActive(true);
-    const res = await fetch(`http://localhost:3000/api/vocabs/${id}`, {
-      method: "GET",
-    });
-    if (res.ok) {
-      const { vocab } = await res.json();
-      setIdEdit(vocab._id);
-      setNewEnglish(vocab.english);
-      setNewIndonesian(vocab.indonesian);
-    }
+    handleSubmitVocab(
+      valueEnglishAdd,
+      valueIndonesianAdd,
+      router,
+      setValueEnglishAdd,
+      setValueIndonesianAdd
+    );
   };
   const handleEditSubmit = async (e: any) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:3000/api/vocabs/${idEdit}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: "1",
-        newEnglish,
-        newIndonesian,
-      }),
-    });
-    if (res.ok) {
-      alert("Vocab updated");
-    } else {
-      alert("Failed to updated");
-    }
-    setIsEditActive(false);
-    router.refresh();
+    handleEditSubmitVocab(
+      idEdit,
+      newEnglish,
+      newIndonesian,
+      router,
+      setIsEditActive
+    );
   };
 
   useEffect(() => {
@@ -171,7 +133,7 @@ const Vocabulary = () => {
       {isAddActive && (
         <form
           className="mb-3 flex flex-row gap-1 text-base"
-          onSubmit={handleSubmit}
+          onSubmit={submitAdd}
         >
           <input
             type="text"
@@ -180,6 +142,7 @@ const Vocabulary = () => {
             placeholder="English"
             value={valueEnglishAdd}
             onChange={(e) => setValueEnglishAdd(e.target.value)}
+            autoFocus={isAddActive}
             className="border py-2 px-3 rounded-md w-48"
           />
           <input
@@ -196,6 +159,7 @@ const Vocabulary = () => {
           </button>
         </form>
       )}
+      {/* ===== EDIT VOCAB ===== */}
       {isEditActive && (
         <form
           className="mb-3 flex flex-row gap-1 text-base"
@@ -208,6 +172,7 @@ const Vocabulary = () => {
             placeholder="English"
             value={newEnglish}
             onChange={(e) => setNewEnglish(e.target.value)}
+            autoFocus={isEditActive}
             className="border py-2 px-3 rounded-md w-48"
           />
           <input
@@ -261,13 +226,22 @@ const Vocabulary = () => {
                 <aside className="flex gap-1 w-fit ml-auto">
                   <button
                     className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-1 px-2 rounded h-fit w-fit"
-                    onClick={() => handleEdit(vocab._id)}
+                    onClick={() =>
+                      handleEditVocab(
+                        vocab._id,
+                        setIsAddActive,
+                        setIsEditActive,
+                        setIdEdit,
+                        setNewEnglish,
+                        setNewIndonesian
+                      )
+                    }
                   >
                     <RiEdit2Line size={15} />
                   </button>
                   <button
                     className="bg-red-400 hover:bg-red-500 text-white font-bold py-1 px-2 rounded h-fit w-fit"
-                    onClick={() => deleteVocab(vocab._id)}
+                    onClick={() => handleDeleteVocab(vocab._id, router)}
                   >
                     <AiOutlineDelete size={15} />
                   </button>
@@ -276,6 +250,9 @@ const Vocabulary = () => {
             </section>
           );
         })}
+      {!isLoading && (
+        <Pagination page={pageActive[0]} setPage={setPageActive} />
+      )}
     </main>
   );
 };
