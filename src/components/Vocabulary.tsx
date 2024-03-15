@@ -209,9 +209,9 @@ const Vocabulary = () => {
                   className="cursor-pointer hover:bg-gray-300 p-1 rounded-full"
                 />
               </p>
-              {!isHideAll && (
+              <section className="relative w-fit">
                 <p
-                  className={`flex gap-1 items-center text-start cursor-pointer w-fit vocabHidden`}
+                  className={`flex gap-1 items-center text-start w-fit vocabHidden`}
                   onClick={() => hideOne(vocab.english)}
                 >
                   {!isMainEnglish ? vocab.english : vocab.indonesian}
@@ -220,8 +220,12 @@ const Vocabulary = () => {
                     className="cursor-pointer hover:bg-gray-300 p-1 rounded-full"
                   />
                 </p>
-              )}
-              {isHideAll && "*****"}
+                {isHideAll && (
+                  <aside className="absolute top-0 left-0 z-20 bg-white w-full hover:hidden text-lg">
+                    *****
+                  </aside>
+                )}
+              </section>
               {!isHideAction && (
                 <aside className="flex gap-1 w-fit ml-auto">
                   <button
@@ -251,7 +255,11 @@ const Vocabulary = () => {
           );
         })}
       {!isLoading && (
-        <Pagination page={pageActive[0]} setPage={setPageActive} />
+        <Pagination
+          page={pageActive[0]}
+          setPage={setPageActive}
+          vocab={dataVocab}
+        />
       )}
     </main>
   );
