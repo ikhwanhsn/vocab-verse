@@ -10,6 +10,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+    plan: {
+      type: String,
+      enum: ["free", "premium"],
+      default: "free",
+    },
   },
   {
     timestamps: true,

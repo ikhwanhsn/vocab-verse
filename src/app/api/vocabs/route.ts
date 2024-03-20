@@ -24,15 +24,26 @@ export async function GET(request: any) {
     const page = nextUrl.searchParams.get("page");
     const limit = nextUrl.searchParams.get("limit");
     const skip = (page - 1) * limit;
-    const vocabs = await Vocab.find().skip(skip).limit(limit);
-
-    if (vocabs.length > 0) {
-      return NextResponse.json(vocabs);
+    if (!page || !limit) {
+      const vocabs = await Vocab.find();
+      if (vocabs.length > 0) {
+        return NextResponse.json(vocabs);
+      } else {
+        return NextResponse.json(
+          { message: "Vocabs not found" },
+          { status: 404 }
+        );
+      }
     } else {
-      return NextResponse.json(
-        { message: "Vocabs not found" },
-        { status: 404 }
-      );
+      const vocabs = await Vocab.find().skip(skip).limit(limit);
+      if (vocabs.length > 0) {
+        return NextResponse.json(vocabs);
+      } else {
+        return NextResponse.json(
+          { message: "Vocabs not found" },
+          { status: 404 }
+        );
+      }
     }
   } catch (error) {
     console.log(error);

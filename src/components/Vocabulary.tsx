@@ -16,6 +16,7 @@ import { handleDeleteVocab } from "@/services/handleDeleteVocab";
 import { handleEditVocab } from "@/services/handleEditVocab";
 import { handleEditSubmitVocab } from "@/services/handleEditSubmitVocab";
 import Pagination from "./Pagination";
+import VocabLoading from "./VocabLoading";
 
 function shuffleArray(array: any) {
   function randomSort() {
@@ -39,9 +40,10 @@ const Vocabulary = () => {
   const [valueIndonesianAdd, setValueIndonesianAdd] = useState("");
   const [newEnglish, setNewEnglish] = useState("");
   const [newIndonesian, setNewIndonesian] = useState("");
-  const [pageActive, setPageActive] = useState([1, 10]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(50);
   const { data, error, isLoading } = useSWR(
-    `/api/vocabs?page=${pageActive[0]}&limit=${pageActive[1]}`,
+    `/api/vocabs?page=${page}&limit=${limit}`,
     fetcher
   );
   const hideAll = () => {
@@ -121,7 +123,10 @@ const Vocabulary = () => {
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
-            onClick={() => setIsHideAction(!isHideAction)}
+            onClick={() => {
+              setIsHideAction(!isHideAction);
+              setIsEditActive(false);
+            }}
           >
             {isHideAction && <GrClearOption size={20} />}
             {!isHideAction && <GrClear size={20} />}
@@ -192,7 +197,7 @@ const Vocabulary = () => {
       {dataVocab.length === 0 && !isLoading && (
         <p className="text-center text-base">No Data</p>
       )}
-      {isLoading && <p className="text-center text-base">Loading...</p>}
+      {isLoading && <VocabLoading />}
       {dataVocab.length > 0 &&
         dataVocab.map((vocab: any) => {
           return (
@@ -209,10 +214,9 @@ const Vocabulary = () => {
                   className="cursor-pointer hover:bg-gray-300 p-1 rounded-full"
                 />
               </p>
-              <section className="relative w-fit">
+              <section className="relative w-fit cursor-pointer">
                 <p
                   className={`flex gap-1 items-center text-start w-fit vocabHidden`}
-                  onClick={() => hideOne(vocab.english)}
                 >
                   {!isMainEnglish ? vocab.english : vocab.indonesian}
                   <HiOutlineSpeakerWave
@@ -221,7 +225,7 @@ const Vocabulary = () => {
                   />
                 </p>
                 {isHideAll && (
-                  <aside className="absolute top-0 left-0 z-20 bg-white w-full hover:hidden text-lg">
+                  <aside className="absolute top-0 left-0 z-20 bg-white w-full hover:opacity-0 text-lg">
                     *****
                   </aside>
                 )}
@@ -254,13 +258,7 @@ const Vocabulary = () => {
             </section>
           );
         })}
-      {!isLoading && (
-        <Pagination
-          page={pageActive[0]}
-          setPage={setPageActive}
-          vocab={dataVocab}
-        />
-      )}
+      {!isLoading && <Pagination page={page} setPage={setPage} limit={limit} />}
     </main>
   );
 };

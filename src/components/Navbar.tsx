@@ -12,7 +12,23 @@ const Navbar = () => {
       <Link href="/" className="text-2xl font-bold text-white">
         VocabVerse
       </Link>
-
+      <ul className="flex gap-4 items-center">
+        <li>
+          <Link href="/home" className="text-white hover:underline">
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link href="/tips" className="text-white hover:underline">
+            Tips
+          </Link>
+        </li>
+        <li>
+          <Link href="/about" className="text-white hover:underline">
+            About
+          </Link>
+        </li>
+      </ul>
       <section className="flex gap-3">
         {status === "authenticated" && (
           <section className="text-white flex relative">
@@ -25,22 +41,14 @@ const Navbar = () => {
             />
           </section>
         )}
-        {status === "authenticated" && (
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => signOut()}
-          >
-            Sign Out
-          </button>
-        )}
-        {status === "unauthenticated" && (
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => signIn("google")}
-          >
-            Sign In
-          </button>
-        )}
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          onClick={() =>
+            status === "authenticated" ? signOut() : signIn("google")
+          }
+        >
+          {status === "authenticated" ? "Sign Out" : "Sign In"}
+        </button>
       </section>
     </nav>
   );
