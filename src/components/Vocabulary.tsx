@@ -214,14 +214,18 @@ const Vocabulary = () => {
                   className="cursor-pointer hover:bg-gray-300 p-1 rounded-full"
                 />
               </p>
-              <section className="relative w-fit cursor-pointer">
+              <section
+                className={`relative w-fit ${isHideAll && "cursor-pointer"}`}
+              >
                 <p
                   className={`flex gap-1 items-center text-start w-fit vocabHidden`}
                 >
                   {!isMainEnglish ? vocab.english : vocab.indonesian}
                   <HiOutlineSpeakerWave
                     size={22}
-                    className="cursor-pointer hover:bg-gray-300 p-1 rounded-full"
+                    className={`cursor-pointer hover:bg-gray-300 p-1 rounded-full ${
+                      isHideAll && "hidden"
+                    }`}
                   />
                 </p>
                 {isHideAll && (

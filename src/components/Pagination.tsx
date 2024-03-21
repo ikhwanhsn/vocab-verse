@@ -33,7 +33,7 @@ const Pagination = ({
   }, [data]);
 
   return (
-    <section className="flex gap-1 justify-center items-center text-base">
+    <section className="flex gap-1 justify-center items-center text-base mt-3">
       <button
         className={`disabled:bg-blue-400 disabled:hover:bg-blue-400 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded w-7 h-7`}
         disabled={page === 1}
