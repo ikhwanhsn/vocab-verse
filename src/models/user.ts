@@ -20,6 +20,10 @@ const userSchema = new Schema(
       enum: ["free", "premium"],
       default: "free",
     },
+    vocabs: {
+      type: [Number],
+      default: [],
+    },
   },
   {
     timestamps: true,

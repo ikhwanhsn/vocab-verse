@@ -50,15 +50,16 @@ const Pagination = ({
           }}
           className="absolute top-0 left-0 w-full h-full opacity-0 bg-blue-500 cursor-pointer"
         >
-          {dataVocab.map((vocab: any, index: number) => {
-            if (index < dataVocab.length / limit) {
-              return (
-                <option key={index} value={index + 1}>
-                  {index + 1}
-                </option>
-              );
-            }
-          })}
+          {dataVocab.length > 0 &&
+            dataVocab.map((vocab: any, index: number) => {
+              if (index < dataVocab.length / limit) {
+                return (
+                  <option key={index} value={index + 1}>
+                    {index + 1}
+                  </option>
+                );
+              }
+            })}
         </select>
       </button>
       <button
