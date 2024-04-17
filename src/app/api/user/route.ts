@@ -11,10 +11,23 @@ export async function POST(request: any) {
       email,
       role: "user",
       plan: "free",
-      vocabs: JSON.stringify([]),
     });
     return NextResponse.json({ message: "User created" }, { status: 201 });
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function GET(request: any) {
+  try {
+    await connectMongoDB();
+    const users = await User.find();
+    return NextResponse.json({ users }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

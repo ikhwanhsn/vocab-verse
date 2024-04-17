@@ -1,12 +1,21 @@
 import connectMongoDB from "@/libs/mongodb";
+import User from "@/models/user";
 import Vocab from "@/models/vocab";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { user_id, english, indonesian } = await request.json();
+    const { email, english, indonesian } = await request.json();
+    const idUser = await User.findOne({ email: email });
+    if (!idUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
     await connectMongoDB();
-    const added = await Vocab.create({ user_id, english, indonesian });
+    const added = await Vocab.create({
+      user_id: idUser.id,
+      english,
+      indonesian,
+    });
     if (added) {
       return NextResponse.json({ message: "Vocab added" }, { status: 201 });
     } else {

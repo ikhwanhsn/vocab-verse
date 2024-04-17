@@ -11,7 +11,6 @@ export const handleEditSubmitVocab = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      user_id: "1",
       newEnglish,
       newIndonesian,
     }),

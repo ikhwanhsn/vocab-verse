@@ -8,6 +8,7 @@ import { GrClearOption, GrClear } from "react-icons/gr";
 import { RiEdit2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
+import { MdAutoFixNormal } from "react-icons/md";
 import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,9 @@ import { handleEditVocab } from "@/services/handleEditVocab";
 import { handleEditSubmitVocab } from "@/services/handleEditSubmitVocab";
 import Pagination from "./Pagination";
 import VocabLoading from "./VocabLoading";
+import { useSession } from "next-auth/react";
+import { getUser } from "@/services/getUser";
+import { getIdUserByEmail } from "@/services/getIdUserByEmail";
 
 function shuffleArray(array: any) {
   function randomSort() {
@@ -27,8 +31,10 @@ function shuffleArray(array: any) {
 }
 
 const Vocabulary = () => {
+  const { status, data: session } = useSession();
   const router = useRouter();
   const [dataVocab, setDataVocab] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const [idEdit, setIdEdit] = useState("");
   const [isMainEnglish, setIsMainEnglish] = useState(true);
   const [isHideAll, setIsHideAll] = useState(true);
@@ -49,15 +55,17 @@ const Vocabulary = () => {
   const hideAll = () => {
     setIsHideAll(!isHideAll);
   };
-  const hideOne = (data: string) => {
-    // setIsHideAll(!isHideAll);
-    alert(data);
-  };
   const shuffle = () => {
     setIsShuffle(!isShuffle);
-    const data = shuffleArray(dataVocab);
-    setDataVocab(data);
+    if (!isShuffle) {
+      setOriginalData([...dataVocab]);
+      const data = shuffleArray(dataVocab);
+      setDataVocab(data);
+    } else {
+      setDataVocab(originalData);
+    }
   };
+
   const submitAdd = async (e: any) => {
     e.preventDefault();
     handleSubmitVocab(
@@ -65,7 +73,9 @@ const Vocabulary = () => {
       valueIndonesianAdd,
       router,
       setValueEnglishAdd,
-      setValueIndonesianAdd
+      setValueIndonesianAdd,
+      setIsAddActive,
+      session?.user?.email
     );
   };
   const handleEditSubmit = async (e: any) => {
@@ -79,13 +89,27 @@ const Vocabulary = () => {
     );
   };
 
+  const filteredData = async (data: Array<any>) => {
+    const user = await getIdUserByEmail(session?.user?.email as string);
+
+    if (data && user) {
+      const filtered: any = data.filter((item) => {
+        return item?.user_id === user._id;
+      });
+      setDataVocab(filtered);
+    } else {
+      setDataVocab([]);
+    }
+  };
+
   useEffect(() => {
     if (data) {
-      setDataVocab(data);
+      filteredData(data);
     }
   }, [data]);
 
   return (
+    // ========= HTML ===========
     <main className="w-2/5 rounded-md mx-auto text-black bg-white pt-5 py-3 px-5 text-lg">
       <section className="flex justify-between items-center font-bold">
         <aside className="flex gap-4 text-xl items-center">
@@ -112,14 +136,15 @@ const Vocabulary = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
             onClick={() => shuffle()}
           >
-            <IoShuffleOutline size={20} />
+            {!isShuffle && <IoShuffleOutline size={20} />}
+            {isShuffle && <MdAutoFixNormal size={20} />}
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
             onClick={() => hideAll()}
           >
-            {isHideAll && <IoMdEye size={20} />}
-            {!isHideAll && <IoMdEyeOff size={20} />}
+            {!isHideAll && <IoMdEye size={20} />}
+            {isHideAll && <IoMdEyeOff size={20} />}
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
@@ -194,9 +219,7 @@ const Vocabulary = () => {
           </button>
         </form>
       )}
-      {dataVocab.length === 0 && !isLoading && (
-        <p className="text-center text-base">No Data</p>
-      )}
+      {/* {<p className="text-center text-base">No Data</p>} */}
       {isLoading && <VocabLoading />}
       {dataVocab.length > 0 &&
         dataVocab.map((vocab: any) => {
@@ -262,7 +285,9 @@ const Vocabulary = () => {
             </section>
           );
         })}
-      {!isLoading && <Pagination page={page} setPage={setPage} limit={limit} />}
+      {!isLoading && dataVocab.length > 0 && (
+        <Pagination page={page} setPage={setPage} limit={limit} />
+      )}
     </main>
   );
 };

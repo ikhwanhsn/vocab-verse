@@ -43,3 +43,21 @@ export async function GET(request: Request, { params }: any) {
     console.log(error);
   }
 }
+
+export async function DELETE(request: Request, { params }: any) {
+  try {
+    const { id } = params;
+    await connectMongoDB();
+    const deleted = await Vocab.findByIdAndDelete(id);
+    if (deleted) {
+      return NextResponse.json({ message: "Vocabs deleted" }, { status: 200 });
+    } else {
+      return NextResponse.json(
+        { message: "Vocabs not found" },
+        { status: 404 }
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
