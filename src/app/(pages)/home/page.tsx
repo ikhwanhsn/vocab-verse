@@ -1,7 +1,9 @@
+import Vocabulary from "@/components/Vocabulary";
+
 const Home = () => {
   return (
-    <main>
-      <h1>Home</h1>
+    <main className="bg-gray-50 py-3">
+      <Vocabulary />
     </main>
   );
 };

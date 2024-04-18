@@ -1,7 +1,9 @@
+import CoomingSoon from "@/components/CoomingSoon";
+
 const Tips = () => {
   return (
     <main>
-      <h1>Tips</h1>
+      <CoomingSoon />
     </main>
   );
 };

@@ -1,7 +1,9 @@
+import CoomingSoon from "@/components/CoomingSoon";
+
 const About = () => {
   return (
     <main>
-      <h1>About</h1>
+      <CoomingSoon />
     </main>
   );
 };

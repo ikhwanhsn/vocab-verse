@@ -3,30 +3,35 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import logo from "../../public/img/logo.png";
+
+const dataNavbar = ["Home", "Tips", "About"];
 
 const Navbar = () => {
   const { status, data: session } = useSession();
+  const pathname = usePathname();
   return (
     <nav className="flex justify-between items-center h-16 px-24 bg-black">
-      <Link href="/" className="text-2xl font-bold text-white">
-        VocabVerse
-      </Link>
+      <section className="flex gap-2 items-center">
+        <Image src={logo} alt="logo" width={40} height={40} />
+        <Link href="/" className="text-2xl font-bold text-white">
+          VocabVerse
+        </Link>
+      </section>
       <ul className="flex gap-4 items-center">
-        <li>
-          <Link href="/home" className="text-white hover:underline">
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link href="/tips" className="text-white hover:underline">
-            Tips
-          </Link>
-        </li>
-        <li>
-          <Link href="/about" className="text-white hover:underline">
-            About
-          </Link>
-        </li>
+        {dataNavbar.map((item, index) => (
+          <li
+            key={index}
+            className={`hover:border-b ${
+              pathname === `/${item.toLocaleLowerCase()}` && "border-b"
+            }`}
+          >
+            <Link href={`/${item.toLowerCase()}`} className="text-white">
+              {item}
+            </Link>
+          </li>
+        ))}
       </ul>
       <section className="flex gap-3">
         {status === "authenticated" && (

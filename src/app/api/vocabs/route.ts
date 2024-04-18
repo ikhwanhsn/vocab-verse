@@ -30,11 +30,13 @@ export async function GET(request: any) {
   try {
     await connectMongoDB();
     const { nextUrl } = request;
+    const email = nextUrl.searchParams.get("email");
+    const user = await User.findOne({ email: email });
     const page = nextUrl.searchParams.get("page");
     const limit = nextUrl.searchParams.get("limit");
     const skip = (page - 1) * limit;
     if (!page || !limit) {
-      const vocabs = await Vocab.find();
+      const vocabs = await Vocab.find({ user_id: user?._id });
       if (vocabs.length > 0) {
         return NextResponse.json(vocabs);
       } else {
@@ -44,14 +46,17 @@ export async function GET(request: any) {
         );
       }
     } else {
-      const vocabs = await Vocab.find().skip(skip).limit(limit);
+      const vocabs = await Vocab.find({ user_id: user?._id })
+        .skip(skip)
+        .limit(limit);
       if (vocabs.length > 0) {
         return NextResponse.json(vocabs);
       } else {
-        return NextResponse.json(
-          { message: "Vocabs not found" },
-          { status: 404 }
-        );
+        // return NextResponse.json(
+        //   { message: "Vocabs not found" },
+        //   { status: 404 }
+        // );
+        return NextResponse.json([]);
       }
     }
   } catch (error) {

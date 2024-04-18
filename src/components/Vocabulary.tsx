@@ -49,7 +49,7 @@ const Vocabulary = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
   const { data, error, isLoading } = useSWR(
-    `/api/vocabs?page=${page}&limit=${limit}`,
+    `/api/vocabs?email=${session?.user?.email}&page=${page}&limit=${limit}`,
     fetcher
   );
   const hideAll = () => {
@@ -89,22 +89,9 @@ const Vocabulary = () => {
     );
   };
 
-  const filteredData = async (data: Array<any>) => {
-    const user = await getIdUserByEmail(session?.user?.email as string);
-
-    if (data && user) {
-      const filtered: any = data.filter((item) => {
-        return item?.user_id === user._id;
-      });
-      setDataVocab(filtered);
-    } else {
-      setDataVocab([]);
-    }
-  };
-
   useEffect(() => {
     if (data) {
-      filteredData(data);
+      setDataVocab(data);
     }
   }, [data]);
 
@@ -219,7 +206,9 @@ const Vocabulary = () => {
           </button>
         </form>
       )}
-      {/* {<p className="text-center text-base">No Data</p>} */}
+      {dataVocab.length === 0 && !isLoading && (
+        <p className="text-center text-base">No Data</p>
+      )}
       {isLoading && <VocabLoading />}
       {dataVocab.length > 0 &&
         dataVocab.map((vocab: any) => {

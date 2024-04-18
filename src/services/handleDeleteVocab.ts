@@ -14,7 +14,7 @@ export const handleDeleteVocab = async (id: string, router: any) => {
     }
     alert("Vocab deleted");
     router.refresh();
-    router.push("/");
+    router.push("/home");
   } catch (error) {
     console.log(error);
   }

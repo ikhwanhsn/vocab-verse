@@ -1,5 +1,3 @@
-import { getVocab } from "./getVocab";
-
 export const handleSubmitVocab = async (
   valueEnglishAdd: string,
   valueIndonesianAdd: string,
@@ -9,15 +7,6 @@ export const handleSubmitVocab = async (
   setIsAddActive: Function,
   email: any
 ) => {
-  // ===== Get user =====
-  // const getUser = await fetch(`http://localhost:3000/api/user/${email}`, {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // });
-  // const user = await getUser.json();
-
   // ===== Add vocab =====
   const res = await fetch("http://localhost:3000/api/vocabs", {
     method: "POST",
@@ -39,6 +28,6 @@ export const handleSubmitVocab = async (
   setValueEnglishAdd("");
   setValueIndonesianAdd("");
   setIsAddActive(false);
-  router.push("/");
+  router.push("/home");
   router.refresh();
 };
