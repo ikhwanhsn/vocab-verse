@@ -1,5 +1,5 @@
 export const getUser = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/user/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${id}`, {
     method: "GET",
   });
   if (res.ok) {

@@ -6,9 +6,12 @@ export const handleDeleteVocab = async (id: string, router: any) => {
     if (!confirm) {
       return;
     }
-    const res = await fetch(`http://localhost:3000/api/vocabs?id=${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/vocabs?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
     if (!res.ok) {
       throw new Error("Failed to delete");
     }

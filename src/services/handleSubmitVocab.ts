@@ -8,7 +8,7 @@ export const handleSubmitVocab = async (
   email: any
 ) => {
   // ===== Add vocab =====
-  const res = await fetch("http://localhost:3000/api/vocabs", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/vocabs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

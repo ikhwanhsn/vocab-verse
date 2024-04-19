@@ -5,16 +5,19 @@ export const handleEditSubmitVocab = async (
   router: any,
   setIsEditActive: any
 ) => {
-  const res = await fetch(`http://localhost:3000/api/vocabs/${idEdit}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      newEnglish,
-      newIndonesian,
-    }),
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/vocabs/${idEdit}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newEnglish,
+        newIndonesian,
+      }),
+    }
+  );
   if (res.ok) {
     alert("Vocab updated");
   } else {

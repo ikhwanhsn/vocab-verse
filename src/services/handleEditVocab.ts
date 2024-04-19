@@ -8,9 +8,12 @@ export const handleEditVocab = async (
 ) => {
   setIsAddActive(false);
   setIsEditActive(true);
-  const res = await fetch(`http://localhost:3000/api/vocabs/${id}`, {
-    method: "GET",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/vocabs/${id}`,
+    {
+      method: "GET",
+    }
+  );
   if (res.ok) {
     const { vocab } = await res.json();
     setIdEdit(vocab._id);
