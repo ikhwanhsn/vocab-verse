@@ -12,14 +12,14 @@ const Navbar = () => {
   const { status, data: session } = useSession();
   const pathname = usePathname();
   return (
-    <nav className="flex justify-between items-center h-16 px-24 bg-black">
+    <nav className="grid grid-cols-3 items-center h-16 px-24 bg-black">
       <section className="flex gap-2 items-center">
         <Image src={logo} alt="logo" width={40} height={40} />
         <Link href="/" className="text-2xl font-bold text-white">
           VocabVerse
         </Link>
       </section>
-      <ul className="flex gap-4 items-center">
+      <ul className="flex gap-4 items-center mx-auto">
         {dataNavbar.map((item, index) => (
           <li
             key={index}
@@ -33,7 +33,7 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-      <section className="flex gap-3">
+      <section className="flex gap-3 place-content-end">
         {status === "authenticated" && (
           <section className="text-white flex relative">
             <Image
