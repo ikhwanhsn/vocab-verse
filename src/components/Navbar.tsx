@@ -12,14 +12,14 @@ const Navbar = () => {
   const { status, data: session } = useSession();
   const pathname = usePathname();
   return (
-    <nav className="grid grid-cols-3 items-center h-16 px-24 bg-black">
+    <nav className="grid md:grid-cols-3 grid-cols-2 items-center h-16 md:px-24 px-3 bg-black">
       <section className="flex gap-2 items-center">
         <Image src={logo} alt="logo" width={40} height={40} />
         <Link href="/" className="text-2xl font-bold text-white">
           VocabVerse
         </Link>
       </section>
-      <ul className="flex gap-4 items-center mx-auto">
+      <ul className="md:flex gap-4 items-center mx-auto hidden">
         {dataNavbar.map((item, index) => (
           <li
             key={index}
@@ -41,12 +41,12 @@ const Navbar = () => {
               alt="user image"
               width={40}
               height={40}
-              className="mx-auto rounded-full shadow-md bg-white"
+              className="mx-auto rounded-full shadow-md bg-white hidden md:block"
             />
           </section>
         )}
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md h-10 w-28"
           onClick={() =>
             status === "authenticated" ? signOut() : signIn("google")
           }

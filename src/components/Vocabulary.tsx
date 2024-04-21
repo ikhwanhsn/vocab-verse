@@ -98,7 +98,7 @@ const Vocabulary = () => {
     // ========= HTML ===========
     <>
       {status === "authenticated" && (
-        <main className="w-2/5 rounded-md mx-auto text-black bg-white pt-5 py-3 px-5 text-lg">
+        <main className="md:w-2/5 w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
           <section className="flex justify-between items-center font-bold">
             <aside className="flex gap-4 text-xl items-center">
               <h2 className="w-20">{isMainEnglish ? "English" : "IndoNes"}</h2>
@@ -109,9 +109,11 @@ const Vocabulary = () => {
               >
                 <GoArrowSwitch size={15} />
               </button>
-              <h2 className="w-20">{!isMainEnglish ? "English" : "IndoNes"}</h2>
+              <h2 className="w-20 hidden md:block">
+                {!isMainEnglish ? "English" : "IndoNes"}
+              </h2>
             </aside>
-            <aside className="space-x-2">
+            <aside className="space-x-2 mt-1 md:mt-0">
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
@@ -154,7 +156,7 @@ const Vocabulary = () => {
           {/* ===== ADD VOCAB ===== */}
           {isAddActive && (
             <form
-              className="mb-3 flex flex-row gap-1 text-base"
+              className="mb-3 flex flex-row gap-1 text-base w-full"
               onSubmit={submitAdd}
             >
               <input
@@ -165,7 +167,7 @@ const Vocabulary = () => {
                 value={valueEnglishAdd}
                 onChange={(e) => setValueEnglishAdd(e.target.value)}
                 autoFocus={isAddActive}
-                className="border py-2 px-3 rounded-md w-48"
+                className="border py-2 px-3 rounded-md md:w-48 w-full"
               />
               <input
                 type="text"
@@ -174,9 +176,9 @@ const Vocabulary = () => {
                 placeholder="Indonesian"
                 value={valueIndonesianAdd}
                 onChange={(e) => setValueIndonesianAdd(e.target.value)}
-                className="border py-2 px-3 rounded-md w-48"
+                className="border py-2 px-3 rounded-md md:w-48 w-full"
               />
-              <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded w-full">
+              <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded md:w-full">
                 Add
               </button>
             </form>
@@ -195,7 +197,7 @@ const Vocabulary = () => {
                 value={newEnglish}
                 onChange={(e) => setNewEnglish(e.target.value)}
                 autoFocus={isEditActive}
-                className="border py-2 px-3 rounded-md w-48"
+                className="border py-2 px-3 rounded-md md:w-48 w-full"
               />
               <input
                 type="text"
@@ -204,9 +206,9 @@ const Vocabulary = () => {
                 placeholder="Indonesian"
                 value={newIndonesian}
                 onChange={(e) => setNewIndonesian(e.target.value)}
-                className="border py-2 px-3 rounded-md w-48"
+                className="border py-2 px-3 rounded-md md:w-48 w-full"
               />
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-2 rounded w-full">
+              <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-2 rounded md:w-full">
                 Edit
               </button>
             </form>
