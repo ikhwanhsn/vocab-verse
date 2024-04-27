@@ -12,48 +12,125 @@ const Navbar = () => {
   const { status, data: session } = useSession();
   const pathname = usePathname();
   return (
-    <nav className="grid md:grid-cols-3 grid-cols-2 items-center h-16 md:px-24 px-3 bg-black">
-      <section className="flex gap-2 items-center">
+    <nav className="navbar bg-black md:px-24 px-3 fixed top-0 z-50">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {dataNavbar.map((item, index) => (
+              <li
+                key={index}
+                className={`hover:border-b ${
+                  pathname === `/${item.toLocaleLowerCase()}` && "border-b"
+                }`}
+              >
+                <Link href={`/${item.toLowerCase()}`} className="text-white">
+                  {item}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href={"/profile"} className="text-white">
+                Profile
+              </Link>
+            </li>
+            <li>
+              <Link href={"/setting"} className="text-white">
+                Setting
+              </Link>
+            </li>
+            <li>
+              <button onClick={() => signOut()} className="text-white">
+                Sign Out
+              </button>
+            </li>
+          </ul>
+        </div>
         <Image src={logo} alt="logo" width={40} height={40} />
-        <Link href="/" className="text-2xl font-bold text-white">
+        <Link href="/" className="text-2xl font-bold text-white ml-1">
           VocabVerse
         </Link>
-      </section>
-      <ul className="md:flex gap-4 items-center mx-auto hidden">
-        {dataNavbar.map((item, index) => (
-          <li
-            key={index}
-            className={`hover:border-b ${
-              pathname === `/${item.toLocaleLowerCase()}` && "border-b"
-            }`}
-          >
-            <Link href={`/${item.toLowerCase()}`} className="text-white">
-              {item}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <section className="flex gap-3 place-content-end">
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          {dataNavbar.map((item, index) => (
+            <li
+              key={index}
+              className={`hover:border-b ${
+                pathname === `/${item.toLocaleLowerCase()}` && "border-b"
+              }`}
+            >
+              <Link href={`/${item.toLowerCase()}`} className="text-white">
+                {item}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="navbar-end space-x-2">
         {status === "authenticated" && (
-          <section className="text-white flex relative">
-            <Image
-              src={session?.user?.image || ""}
-              alt="user image"
-              width={40}
-              height={40}
-              className="mx-auto rounded-full shadow-md bg-white hidden md:block"
-            />
-          </section>
+          <div className="dropdown dropdown-end md:block hidden">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <Image
+                  src={session?.user?.image || ""}
+                  alt="user image"
+                  width={40}
+                  height={40}
+                  className="mx-auto rounded-full shadow-md bg-white hidden md:block"
+                />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-white"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <button onClick={() => signOut()}>Sign Out</button>
+              </li>
+            </ul>
+          </div>
         )}
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md h-10 w-28"
-          onClick={() =>
-            status === "authenticated" ? signOut() : signIn("google")
-          }
-        >
-          {status === "authenticated" ? "Sign Out" : "Sign In"}
-        </button>
-      </section>
+        {status === "unauthenticated" && (
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md h-10 w-28"
+            onClick={() => signIn("google")}
+          >
+            Sign In
+          </button>
+        )}
+      </div>
     </nav>
   );
 };

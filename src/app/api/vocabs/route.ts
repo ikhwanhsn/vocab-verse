@@ -7,6 +7,16 @@ export async function POST(request: Request) {
   try {
     const { email, english, indonesian } = await request.json();
     const idUser = await User.findOne({ email: email });
+    const vocabExists = await Vocab.findOne({
+      user_id: idUser.id,
+      english: english,
+    });
+    if (vocabExists) {
+      return NextResponse.json(
+        { message: "Vocab already exists" },
+        { status: 400 }
+      );
+    }
     if (!idUser) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
@@ -17,7 +27,10 @@ export async function POST(request: Request) {
       indonesian,
     });
     if (added) {
-      return NextResponse.json({ message: "Vocab added" }, { status: 201 });
+      return NextResponse.json(
+        { message: "New vocabulary has been added!" },
+        { status: 201 }
+      );
     } else {
       return NextResponse.json({ message: "Failed to added" }, { status: 500 });
     }

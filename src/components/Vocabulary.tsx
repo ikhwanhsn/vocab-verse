@@ -49,7 +49,8 @@ const Vocabulary = () => {
   const [limit, setLimit] = useState(50);
   const { data, error, isLoading } = useSWR(
     `/api/vocabs?email=${session?.user?.email}&page=${page}&limit=${limit}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 1000 }
   );
   const hideAll = () => {
     setIsHideAll(!isHideAll);
@@ -167,7 +168,7 @@ const Vocabulary = () => {
                 value={valueEnglishAdd}
                 onChange={(e) => setValueEnglishAdd(e.target.value)}
                 autoFocus={isAddActive}
-                className="border py-2 px-3 rounded-md md:w-48 w-full"
+                className="border py-2 px-3 rounded-md md:w-48 w-full bg-white"
               />
               <input
                 type="text"
@@ -176,7 +177,7 @@ const Vocabulary = () => {
                 placeholder="Indonesian"
                 value={valueIndonesianAdd}
                 onChange={(e) => setValueIndonesianAdd(e.target.value)}
-                className="border py-2 px-3 rounded-md md:w-48 w-full"
+                className="border py-2 px-3 rounded-md md:w-48 w-full bg-white"
               />
               <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded md:w-full">
                 Add
@@ -197,7 +198,7 @@ const Vocabulary = () => {
                 value={newEnglish}
                 onChange={(e) => setNewEnglish(e.target.value)}
                 autoFocus={isEditActive}
-                className="border py-2 px-3 rounded-md md:w-48 w-full"
+                className="border py-2 px-3 rounded-md md:w-48 w-full bg-white"
               />
               <input
                 type="text"
@@ -206,7 +207,7 @@ const Vocabulary = () => {
                 placeholder="Indonesian"
                 value={newIndonesian}
                 onChange={(e) => setNewIndonesian(e.target.value)}
-                className="border py-2 px-3 rounded-md md:w-48 w-full"
+                className="border py-2 px-3 rounded-md md:w-48 w-full bg-white"
               />
               <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-2 rounded md:w-full">
                 Edit
@@ -245,7 +246,9 @@ const Vocabulary = () => {
                     }`}
                   >
                     <p
-                      className={`flex gap-1 items-center text-start w-fit vocabHidden`}
+                      className={`flex gap-1 items-center text-start w-fit vocabHidden ${
+                        isHideAll && "truncate"
+                      }`}
                     >
                       {!isMainEnglish ? vocab.english : vocab.indonesian}
                       <HiOutlineSpeakerWave
@@ -268,7 +271,7 @@ const Vocabulary = () => {
                     )}
                   </section>
                   {!isHideAction && (
-                    <aside className="flex gap-1 w-fit ml-auto">
+                    <aside className="flex gap-1 w-fit ml-auto z-20 bg-white">
                       <button
                         className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-1 px-2 rounded h-fit w-fit"
                         onClick={() =>
@@ -301,7 +304,7 @@ const Vocabulary = () => {
         </main>
       )}
       {status === "unauthenticated" && (
-        <section className="text-center mt-40">
+        <section className="text-center mt-40 text-black">
           <p>Please login to access this page</p>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2"

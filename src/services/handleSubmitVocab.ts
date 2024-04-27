@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const handleSubmitVocab = async (
   valueEnglishAdd: string,
   valueIndonesianAdd: string,
@@ -15,19 +17,26 @@ export const handleSubmitVocab = async (
     },
     body: JSON.stringify({
       email: email,
-      english: valueEnglishAdd,
-      indonesian: valueIndonesianAdd,
+      english: valueEnglishAdd.toLowerCase(),
+      indonesian: valueIndonesianAdd.toLowerCase(),
     }),
   });
+  const message = await res.json();
   if (!res.ok) {
-    throw new Error(res.statusText);
+    Swal.fire({
+      title: "Error!",
+      text: message.message,
+      icon: "error",
+    });
+    return;
   }
-
   // ===== Alert =====
-  alert("Vocab added");
   setValueEnglishAdd("");
   setValueIndonesianAdd("");
   setIsAddActive(false);
-  router.push("/home");
-  router.refresh();
+  Swal.fire({
+    title: "Success!",
+    text: message.message,
+    icon: "success",
+  });
 };

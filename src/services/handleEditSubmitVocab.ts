@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export const handleEditSubmitVocab = async (
   idEdit: string,
   newEnglish: string,
@@ -13,16 +15,18 @@ export const handleEditSubmitVocab = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        newEnglish,
-        newIndonesian,
+        newEnglish: newEnglish.toLowerCase(),
+        newIndonesian: newIndonesian.toLowerCase(),
       }),
     }
   );
-  if (res.ok) {
-    alert("Vocab updated");
-  } else {
-    alert("Failed to updated");
+  if (!res.ok) {
+    throw new Error(res.statusText);
   }
   setIsEditActive(false);
-  router.refresh();
+  Swal.fire({
+    title: "Success!",
+    text: "Your vocab has been updated!",
+    icon: "success",
+  });
 };

@@ -2,7 +2,7 @@ import CoomingSoon from "@/components/CoomingSoon";
 
 const About = () => {
   return (
-    <main>
+    <main className="min-h-screen">
       <CoomingSoon title="About Page" />
     </main>
   );
