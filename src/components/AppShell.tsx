@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -13,7 +13,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
       {!disableNavbar.includes(pathname) && <Navbar />}
       <section className="h-16 w-full"></section>
       {children}
-      <Footer />
+      {!disableNavbar.includes(pathname) && <Footer />}
     </main>
   );
 };
