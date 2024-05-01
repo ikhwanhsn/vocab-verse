@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
-  const disableNavbar = ["/"];
+  const disableNavbar = [""];
   const pathname = usePathname();
 
   return (

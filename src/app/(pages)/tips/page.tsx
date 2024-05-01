@@ -17,9 +17,10 @@ const Tips = () => {
   ];
 
   return (
-    <main className="md:w-2/5 mt-3 min-h-screen w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
-      <h1 className="text-center font-bold">Tips dan Trik</h1>
-      <ul className="text-base mt-5">
+    <main className="md:w-2/5 md:mt-3 mt-0 min-h-screen w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
+      <h1 className="text-center font-bold mb-3">Tips dan Trik</h1>
+      <hr />
+      <ul className="text-base mt-3">
         {tips.map((tip, index) => (
           <li key={index}>{tip}</li>
         ))}
