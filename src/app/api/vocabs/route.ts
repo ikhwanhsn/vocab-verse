@@ -44,36 +44,22 @@ export async function GET(request: any) {
     await connectMongoDB();
     const { nextUrl } = request;
     const email = nextUrl.searchParams.get("email");
-    const user = await User.findOne({ email: email });
-    const page = nextUrl.searchParams.get("page");
-    const limit = nextUrl.searchParams.get("limit");
+    const user = await User.findOne({ email });
+    const page = parseInt(nextUrl.searchParams.get("page")) || 1;
+    const limit = parseInt(nextUrl.searchParams.get("limit")) || 50;
     const skip = (page - 1) * limit;
-    if (!page || !limit) {
-      const vocabs = await Vocab.find({ user_id: user?._id });
-      if (vocabs.length > 0) {
-        return NextResponse.json(vocabs);
-      } else {
-        return NextResponse.json(
-          { message: "Vocabs not found" },
-          { status: 404 }
-        );
-      }
-    } else {
-      const vocabs = await Vocab.find({ user_id: user?._id })
-        .skip(skip)
-        .limit(limit);
-      if (vocabs.length > 0) {
-        return NextResponse.json(vocabs);
-      } else {
-        // return NextResponse.json(
-        //   { message: "Vocabs not found" },
-        //   { status: 404 }
-        // );
-        return NextResponse.json([]);
-      }
-    }
+
+    const total = await Vocab.countDocuments({ user_id: user?._id });
+    const vocabs = await Vocab.find({ user_id: user?._id })
+      .skip(skip)
+      .limit(limit);
+
+    return NextResponse.json({
+      vocabs: vocabs,
+      total: total,
+    });
   } catch (error) {
-    console.log(error);
+    console.log("Error fetching vocabs:", error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

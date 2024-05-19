@@ -91,7 +91,7 @@ const Vocabulary = () => {
 
   useEffect(() => {
     if (data) {
-      setDataVocab(data);
+      setDataVocab(data.vocabs);
     }
   }, [data]);
 
