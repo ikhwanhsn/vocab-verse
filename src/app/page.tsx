@@ -115,7 +115,7 @@ const CardStudent = ({ name, coment }: { name: string; coment: string }) => {
           <p>Student</p>
         </aside>
       </section>
-      <p className="mt-2">"{coment}"</p>
+      <p className="mt-2">{coment}</p>
     </main>
   );
 };
