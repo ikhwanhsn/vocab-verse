@@ -28,6 +28,8 @@ export const handleSubmitVocab = async (
       text: message.message,
       icon: "error",
     });
+    setValueEnglishAdd("");
+    setValueIndonesianAdd("");
     return;
   }
   // ===== Alert =====

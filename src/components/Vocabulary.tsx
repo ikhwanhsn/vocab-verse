@@ -94,6 +94,9 @@ const Vocabulary = () => {
       setDataVocab(data.vocabs);
     }
   }, [data]);
+  useEffect(() => {
+    router.push(`/home?page=${page}`);
+  }, [page]);
 
   return (
     // ========= HTML ===========
@@ -219,6 +222,7 @@ const Vocabulary = () => {
           )}
           {isLoading && <VocabLoading />}
           {dataVocab.length > 0 &&
+            !isLoading &&
             dataVocab.map((vocab: any) => {
               return (
                 <section
