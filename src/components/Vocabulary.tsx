@@ -303,7 +303,12 @@ const Vocabulary = () => {
               );
             })}
           {!isLoading && dataVocab.length > 0 && (
-            <Pagination page={page} setPage={setPage} limit={limit} />
+            <Pagination
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              shuffle={setIsShuffle}
+            />
           )}
         </main>
       )}

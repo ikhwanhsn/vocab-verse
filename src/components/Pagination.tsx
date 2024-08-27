@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import useSWR from "swr";
 
-const Pagination = ({ page, setPage, limit }: any) => {
+const Pagination = ({ page, setPage, limit, shuffle }: any) => {
   const { data: session } = useSession();
   const [dataVocab, setDataVocab] = useState([]);
   const [total, setTotal] = useState(0);
@@ -26,12 +26,14 @@ const Pagination = ({ page, setPage, limit }: any) => {
   const prevPage = () => {
     if (page > 1) {
       setPage(page - 1);
+      shuffle(false);
     }
   };
 
   const nextPage = () => {
     if (dataVocab.length === limit) {
       setPage(page + 1);
+      shuffle(false);
     }
   };
 
