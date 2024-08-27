@@ -11,7 +11,7 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { MdAutoFixNormal } from "react-icons/md";
 import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { handleSubmitVocab } from "@/services/handleSubmitVocab";
 import { handleDeleteVocab } from "@/services/handleDeleteVocab";
 import { handleEditVocab } from "@/services/handleEditVocab";
@@ -30,6 +30,8 @@ function shuffleArray(array: any) {
 }
 
 const Vocabulary = () => {
+  const pathname = usePathname();
+  const params = useSearchParams();
   const { status, data: session } = useSession();
   const router = useRouter();
   const [dataVocab, setDataVocab] = useState([]);
@@ -95,8 +97,9 @@ const Vocabulary = () => {
     }
   }, [data]);
   useEffect(() => {
-    router.push(`/home?page=${page}`);
-  }, [page]);
+    const currentPage: any = params.get("page");
+    setPage(Number(currentPage));
+  }, []);
 
   return (
     // ========= HTML ===========

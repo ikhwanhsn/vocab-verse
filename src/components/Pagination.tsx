@@ -2,11 +2,15 @@
 
 import { fetcher } from "@/libs/swr/fetcher";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import useSWR from "swr";
 
 const Pagination = ({ page, setPage, limit, shuffle }: any) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const [dataVocab, setDataVocab] = useState([]);
   const [total, setTotal] = useState(0);
@@ -14,6 +18,16 @@ const Pagination = ({ page, setPage, limit, shuffle }: any) => {
   const { data, error, isLoading } = useSWR(
     `/api/vocabs?email=${session?.user?.email}&page=${page}&limit=${limit}`,
     fetcher
+  );
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
   );
 
   useEffect(() => {
@@ -27,6 +41,7 @@ const Pagination = ({ page, setPage, limit, shuffle }: any) => {
     if (page > 1) {
       setPage(page - 1);
       shuffle(false);
+      router.push(pathname + "?" + createQueryString("page", String(page - 1)));
     }
   };
 
@@ -34,6 +49,7 @@ const Pagination = ({ page, setPage, limit, shuffle }: any) => {
     if (dataVocab.length === limit) {
       setPage(page + 1);
       shuffle(false);
+      router.push(pathname + "?" + createQueryString("page", String(page + 1)));
     }
   };
 
@@ -53,6 +69,10 @@ const Pagination = ({ page, setPage, limit, shuffle }: any) => {
           id="page"
           onChange={(e) => {
             setPage(parseInt(e.target.value));
+            shuffle(false);
+            router.push(
+              pathname + "?" + createQueryString("page", e.target.value)
+            );
           }}
           className="absolute top-0 left-0 w-full h-full opacity-0 bg-blue-500 cursor-pointer"
         >

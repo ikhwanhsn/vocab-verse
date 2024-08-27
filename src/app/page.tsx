@@ -17,7 +17,7 @@ export default function Home() {
             with many tools that can help you growth so fast.
           </h3>
           <Link
-            href={"/home"}
+            href={"/home?page=1"}
             className="p-3 btn-primary text-white rounded-md btn mt-5"
           >
             Go to Home Page🚀
