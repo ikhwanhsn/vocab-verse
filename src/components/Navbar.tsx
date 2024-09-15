@@ -6,13 +6,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "../../public/img/logo.png";
 
-const dataNavbar = ["Home", "Tips", "About"];
+// const dataNavbar = ["Home", "Tips", "About"];
+const dataNavbar = [
+  {
+    name: "Home",
+    link: "/home?page=1",
+  },
+  {
+    name: "Tips",
+    link: "/tips",
+  },
+  {
+    name: "About",
+    link: "/about",
+  },
+];
 
 const Navbar = () => {
   const { status, data: session } = useSession();
   const pathname = usePathname();
   return (
-    <nav className="navbar bg-black md:px-24 px-3 fixed top-0 z-50">
+    <nav className="navbar bg-black md:px-12 px-3 fixed top-0 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -39,11 +53,11 @@ const Navbar = () => {
               <li
                 key={index}
                 className={`hover:border-b ${
-                  pathname === `/${item.toLocaleLowerCase()}` && "border-b"
+                  pathname === `/${item.name.toLocaleLowerCase()}` && "border-b"
                 }`}
               >
-                <Link href={`/${item.toLowerCase()}`} className="text-white">
-                  {item}
+                <Link href={item.link} className="text-white">
+                  {item.name}
                 </Link>
               </li>
             ))}
@@ -75,11 +89,11 @@ const Navbar = () => {
             <li
               key={index}
               className={`hover:border-b ${
-                pathname === `/${item.toLocaleLowerCase()}` && "border-b"
+                pathname === `/${item.name.toLocaleLowerCase()}` && "border-b"
               }`}
             >
-              <Link href={`/${item.toLowerCase()}`} className="text-white">
-                {item}
+              <Link href={item.link} className="text-white">
+                {item.name}
               </Link>
             </li>
           ))}

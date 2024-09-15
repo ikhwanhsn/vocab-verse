@@ -11,7 +11,7 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { MdAutoFixNormal } from "react-icons/md";
 import { fetcher } from "@/libs/swr/fetcher";
 import useSWR from "swr";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { handleSubmitVocab } from "@/services/handleSubmitVocab";
 import { handleDeleteVocab } from "@/services/handleDeleteVocab";
 import { handleEditVocab } from "@/services/handleEditVocab";
@@ -30,7 +30,6 @@ function shuffleArray(array: any) {
 }
 
 const Vocabulary = () => {
-  const pathname = usePathname();
   const params = useSearchParams();
   const { status, data: session } = useSession();
   const router = useRouter();
@@ -122,6 +121,7 @@ const Vocabulary = () => {
             </aside>
             <aside className="space-x-2 mt-1 md:mt-0">
               <button
+                title="Add new vocab"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
                   setIsEditActive(false);
@@ -131,6 +131,7 @@ const Vocabulary = () => {
                 <IoMdAdd size={20} />
               </button>
               <button
+                title={isShuffle ? "Unshuffle" : "Shuffle"}
                 className="bg-blue-500 disabled:cursor-not-allowed hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
                 onClick={() => shuffle()}
                 disabled={dataVocab.length === 0}
@@ -139,6 +140,7 @@ const Vocabulary = () => {
                 {isShuffle && <MdAutoFixNormal size={20} />}
               </button>
               <button
+                title={isHideAll ? "Show all" : "Hide all"}
                 className="bg-blue-500 disabled:cursor-not-allowed hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
                 onClick={() => hideAll()}
                 disabled={dataVocab.length === 0}
@@ -147,6 +149,7 @@ const Vocabulary = () => {
                 {isHideAll && <IoMdEyeOff size={20} />}
               </button>
               <button
+                title={isHideAction ? "Show action" : "Hide action"}
                 className="bg-blue-500 hover:bg-blue-600 disabled:cursor-not-allowed text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
                   setIsHideAction(!isHideAction);
@@ -221,7 +224,17 @@ const Vocabulary = () => {
             </form>
           )}
           {dataVocab.length === 0 && !isLoading && (
-            <p className="text-center text-base">No Data</p>
+            <center>
+              <p className="text-center text-base mt-5 italic">
+                No Data, Let's add some vocab
+              </p>
+              <button
+                className="bg-blue-500 mt-1 text-sm hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
+                onClick={() => setIsAddActive(true)}
+              >
+                Add Vocab
+              </button>
+            </center>
           )}
           {isLoading && <VocabLoading />}
           {dataVocab.length > 0 &&
