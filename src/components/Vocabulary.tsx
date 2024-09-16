@@ -3,7 +3,7 @@
 import { GoArrowSwitch } from "react-icons/go";
 import { IoShuffleOutline } from "react-icons/io5";
 import { IoMdAdd, IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { GrClearOption, GrClear } from "react-icons/gr";
 import { RiEdit2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -102,7 +102,7 @@ const Vocabulary = () => {
 
   return (
     // ========= HTML ===========
-    <>
+    <Suspense fallback={<></>}>
       {status === "authenticated" && (
         <main className="md:w-2/5 w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
           <section className="flex justify-between items-center font-bold">
@@ -339,7 +339,7 @@ const Vocabulary = () => {
           </button>
         </section>
       )}
-    </>
+    </Suspense>
   );
 };
 
