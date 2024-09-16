@@ -226,7 +226,7 @@ const Vocabulary = () => {
           {dataVocab.length === 0 && !isLoading && (
             <center>
               <p className="text-center text-base mt-5 italic">
-                No Data, Let's add some vocab
+                No Data, Lets add some vocab
               </p>
               <button
                 className="bg-blue-500 mt-1 text-sm hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"

@@ -89,7 +89,7 @@ export default function Home() {
       </section>
       <section className="w-auto mx-12 my-12 h-96 rounded-xl shadow-md bg-gray-100 p-5">
         <section className="w-1/2 mt-12 ml-5">
-          <h1 className="text-4xl font-bold">Let's make things happen</h1>
+          <h1 className="text-4xl font-bold">Lets make things happen</h1>
           <p className="mt-3 text-lg">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
             eaque porro, tenetur corrupti incidunt autem nobis est ea, officiis
