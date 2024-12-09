@@ -8,10 +8,10 @@ import { IoPersonOutline } from "react-icons/io5";
 export default function Home() {
   return (
     <main className="mx-auto w-full text-sm min-h-screen text-black relative">
-      <section className="md:px-12 px-5 md:pt-32 pt-32">
+      <section className="md:px-7 lg:px-12 px-5 md:pt-32 pt-32">
         <aside>
           <h1 className="mb-3 md:text-5xl text-4xl font-bold">VocabVerse</h1>
-          <h3 className="text-xl w-1/2 leading-8">
+          <h3 className="text-xl md:w-1/2 leading-8">
             Learn English quickly and easily, just like a child, using powerful
             tools that accelerate your learning and help you progress faster
             than ever.
@@ -26,7 +26,7 @@ export default function Home() {
         <Image
           src={book}
           alt="book"
-          className="absolute right-24 top-10 hidden md:block"
+          className="absolute right-24 top-10 hidden md:block md:pl-24 lg:pl-0 md:mt-16 lg:mt-0"
           width={400}
           height={400}
         />
@@ -43,7 +43,7 @@ export default function Home() {
           activities, and personalized feedback to help you achieve your
           language learning goals.
         </p>
-        <article className="grid grid-cols-3 gap-5 mt-5 text-left">
+        <article className="md:grid grid-cols-3 gap-5 mt-5 text-left space-y-2 md:space-y-0">
           <CardLearning
             title="Communicative Approach"
             description="Our courses focus on developing your conversational skills through
@@ -62,7 +62,7 @@ export default function Home() {
           />
         </article>
       </section>
-      <section className="my-32 text-center w-full px-24">
+      <section className="my-32 text-center w-full md:px-24 px-5">
         <h1 className="text-4xl font-bold">How does it work?</h1>
         <p className="mt-3 text-lg">
           With lots of unique blocks, you can easily build a page without any
@@ -87,10 +87,12 @@ export default function Home() {
           </li>
         </ul>
       </section>
-      <section className="w-auto mx-12 my-12 h-96 rounded-xl shadow-md bg-gray-100 p-5">
-        <section className="w-1/2 mt-12 ml-5">
-          <h1 className="text-4xl font-bold">Lets make things happen</h1>
-          <p className="mt-3 text-lg">
+      <section className="w-auto mx-5 md:mx-12 my-12 h-96 rounded-xl shadow-md bg-gray-100 p-3 md:p-5">
+        <section className="md:w-1/2 mt-7 md:mt-12 ml-5">
+          <h1 className="text-3xl md:text-4xl font-bold">
+            Lets make things happen
+          </h1>
+          <p className="mt-3 text-base md:text-lg">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
             eaque porro, tenetur corrupti incidunt autem nobis est ea, officiis
             cum eum provident sed. Dolorem doloribus qui minima fugit?
@@ -110,7 +112,7 @@ export default function Home() {
           Hear from real students who have transformed their English skills with
           our courses.
         </p>
-        <article className="grid grid-cols-3 gap-5 mt-5 text-left">
+        <article className="md:grid grid-cols-3 gap-5 mt-5 text-left space-y-2 md:space-y-0">
           <CardStudent
             name="John Doe"
             coment="The English course at this institution has been a\n game-changer for me. The engaging lessons and personalized\n feedback have helped me improve my language skills\n significantly."
@@ -125,7 +127,7 @@ export default function Home() {
           />
         </article>
       </section>
-      <section className="flex justify-between px-12 gap-5 my-24">
+      <section className="md:flex justify-between px-5 md:px-12 gap-5 my-24">
         <section>
           <h1 className="text-4xl font-bold">Our Newsletters</h1>
           <p className="mt-3 text-base">
@@ -135,7 +137,7 @@ export default function Home() {
             sapiente repudiandae fugit?
           </p>
         </section>
-        <section className="flex items-center gap-1">
+        <section className="flex items-center gap-1 mt-3 md:mt-0">
           <input type="text" placeholder="Email" className="input bg-white" />
           <button className="btn-primary text-white btn">Subscribe</button>
         </section>

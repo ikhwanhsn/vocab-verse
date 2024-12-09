@@ -66,7 +66,7 @@ const Tips = () => {
           tips.english.map((tip, index) => <li key={index}>{tip}</li>)}
       </ul>
       <h1 className="mt-5 font-bold">{isEnglish ? "Notes" : "Catatan"} :</h1>
-      <ul className="text-base mt-2 list-disc mb-5">
+      <ul className="text-base mt-2 list-disc mb-5 ml-4">
         {!isEnglish &&
           catatan.indonesia.map((catatan, index) => (
             <li key={index}>{catatan}</li>
