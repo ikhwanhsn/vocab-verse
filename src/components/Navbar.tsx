@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "../../public/img/logo.png";
 
-// const dataNavbar = ["Home", "Tips", "About"];
 const dataNavbar = [
   {
     name: "Home",
@@ -133,14 +132,15 @@ const Navbar = () => {
             </ul>
           </div>
         )}
-        {status === "unauthenticated" && (
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md h-10 w-28"
-            onClick={() => signIn("google")}
-          >
-            Sign In
-          </button>
-        )}
+        {status === "loading" ||
+          (status === "unauthenticated" && (
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md h-10 w-28"
+              onClick={() => signIn("google")}
+            >
+              Sign In
+            </button>
+          ))}
       </div>
     </nav>
   );

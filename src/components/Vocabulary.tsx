@@ -104,7 +104,7 @@ const Vocabulary = () => {
     // ========= HTML ===========
     <Suspense fallback={<></>}>
       {status === "authenticated" && (
-        <main className="md:w-2/5 w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
+        <main className="lg:w-2/5 md:w-4/5 w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
           <section className="flex justify-between items-center font-bold">
             <aside className="flex gap-4 text-xl items-center">
               <h2 className="w-20">{isMainEnglish ? "English" : "IndoNes"}</h2>
