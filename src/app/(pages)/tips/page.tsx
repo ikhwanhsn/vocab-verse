@@ -41,7 +41,7 @@ const Tips = () => {
   const [isEnglish, setIsEnglish] = useState(false);
 
   return (
-    <main className="md:w-2/5 md:mt-3 mt-0 min-h-screen w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
+    <main className="lg:w-2/5 md:w-4/5 md:mt-3 mt-0 min-h-screen w-full rounded-md md:mx-auto text-black bg-white md:pt-5 py-3 px-5 text-lg">
       <section className="relative">
         <h1 className="text-center font-bold mb-3">
           {isEnglish ? "Tips and Tricks" : "Tips dan Trik"}

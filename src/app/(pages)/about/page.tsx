@@ -8,7 +8,7 @@ import team3 from "../../../../public/img/team3.jpg";
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto px-12 py-8 text-black">
+    <div className="container mx-auto md:px-0 lg:px-12 px-5 py-8 text-black">
       <h1 className="text-3xl font-bold mb-8 text-center">About VocabVerse</h1>
 
       <section className="mb-12">
@@ -74,7 +74,7 @@ export default function AboutPage() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Why Choose Us</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-3">
           {[
             {
               title: "Expert Teachers",
@@ -115,7 +115,7 @@ export default function AboutPage() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Our Team</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-3">
           {[
             {
               name: "Ikhwanul Husna",
@@ -123,12 +123,12 @@ export default function AboutPage() {
               image: team1,
             },
             {
-              name: "Muhammad Gilang Ramadhan",
+              name: "Muhammad Gilang",
               role: "Head of Online Learning",
               image: team2,
             },
             {
-              name: "Gidhi Ramanda Putra",
+              name: "Gidhi Ramanda",
               role: "Student Success Coordinator",
               image: team3,
             },
@@ -150,7 +150,7 @@ export default function AboutPage() {
 
       <section>
         <h2 className="text-2xl font-semibold mb-4">Accreditations</h2>
-        <div className="flex flex-wrap gap-4 justify-center">
+        <div className="flex md:flex-row flex-col items-center flex-wrap gap-4 justify-center">
           {[
             "TESOL Certified",
             "Cambridge English Approved",
@@ -160,7 +160,7 @@ export default function AboutPage() {
             <Badge
               key={index}
               variant="default"
-              className="text-lg text-blue-50 py-2 px-4"
+              className="text-lg text-blue-50 py-2 px-4 w-fit"
             >
               {accreditation}
             </Badge>
