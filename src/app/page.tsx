@@ -31,7 +31,7 @@ export default function Home() {
           height={400}
         />
       </section>
-      <section className="text-lg mt-52 text-center md:px-40 px-5 bg-gray-100 pt-12 pb-20">
+      <section className="text-lg mt-52 text-center lg:px-40 md:px-12 px-5 bg-gray-100 pt-12 pb-20">
         <p className="text-base bg-white w-fit mx-auto px-3 py-1 rounded-full">
           Effective Learning
         </p>
@@ -88,7 +88,7 @@ export default function Home() {
         </ul>
       </section>
       <section className="w-auto mx-5 md:mx-12 my-12 h-96 rounded-xl shadow-md bg-gray-100 p-3 md:p-5">
-        <section className="md:w-1/2 mt-7 md:mt-12 ml-5">
+        <section className="md:w-1/2 mt-7 lg:mt-12 md:mt-3 ml-5">
           <h1 className="text-3xl md:text-4xl font-bold">
             Lets make things happen
           </h1>
@@ -103,7 +103,7 @@ export default function Home() {
           </button>
         </section>
       </section>
-      <section className="text-lg mt-16 text-center md:px-40 px-5 mb-24">
+      <section className="text-lg mt-16 text-center lg:px-40 md:px-12 px-5 mb-24">
         <p className="text-base bg-white w-fit mx-auto px-3 py-1 rounded-full">
           Student Testimonials
         </p>
