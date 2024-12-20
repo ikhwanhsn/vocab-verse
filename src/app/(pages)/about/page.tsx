@@ -26,7 +26,7 @@ export default function AboutPage() {
           <p className="mb-2">
             Through innovative teaching methods, engaging content, and
             personalized learning experiences, we aim to make the journey of
-            learning English both effective and enjoyable. Whether you're a
+            learning English both effective and enjoyable. Whether you&apos;re a
             beginner or looking to refine your language skills, VocabVerse
             offers a wide range of resources to cater to all levels. We believe
             that anyone, regardless of background or location, should have the
@@ -34,7 +34,7 @@ export default function AboutPage() {
           </p>
           <p className="mb-2">
             At the heart of VocabVerse is the belief that mastering English goes
-            beyond just learning vocabulary and grammar. It's about gaining
+            beyond just learning vocabulary and grammar. It&apos;s about gaining
             confidence, understanding different cultures, and being able to
             connect with people from all walks of life. Our mission is to break
             down language barriers and create a more inclusive world where

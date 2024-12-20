@@ -98,7 +98,7 @@ const Vocabulary = () => {
   useEffect(() => {
     const currentPage: any = params.get("page");
     setPage(Number(currentPage));
-  }, []);
+  }, [params]);
 
   return (
     // ========= HTML ===========
