@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import book from "../../public/img/book.png";
 import { IoPersonOutline } from "react-icons/io5";
+import { motion } from "motion/react";
 
 export default function Home() {
   return (
@@ -23,18 +24,25 @@ export default function Home() {
             Go to Home Page🚀
           </Link>
         </aside>
-        <Image
-          src={book}
-          alt="book"
-          className="absolute right-24 top-10 hidden md:block md:pl-24 lg:pl-0 md:mt-16 lg:mt-0"
-          width={400}
-          height={400}
-        />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Image
+            src={book}
+            alt="book"
+            className="absolute right-24 top-10 hidden md:block md:pl-24 lg:pl-0 md:mt-16 lg:mt-0"
+            width={400}
+            height={400}
+          />
+        </motion.div>
       </section>
       <section className="text-lg mt-52 text-center lg:px-40 md:px-12 px-5 bg-gray-100 pt-12 pb-20">
-        <p className="text-base bg-white w-fit mx-auto px-3 py-1 rounded-full">
+        <motion.p
+          className="text-base bg-white w-fit mx-auto px-3 py-1 rounded-full"
+          initial={{ opacity: 0, scale: 0.7 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, type: "easeOut" }}
+        >
           Effective Learning
-        </p>
+        </motion.p>
         <h1 className="text-4xl font-bold mb-2 mt-1">
           Proven Techniques for Mastering English
         </h1>
