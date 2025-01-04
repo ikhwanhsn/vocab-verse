@@ -7,6 +7,21 @@ import { IoPersonOutline } from "react-icons/io5";
 import { motion } from "motion/react";
 
 export default function Home() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   return (
     <main className="mx-auto w-full text-sm min-h-screen text-black relative">
       <section className="md:px-7 lg:px-12 px-5 md:pt-32 pt-32">
@@ -24,7 +39,11 @@ export default function Home() {
             Go to Home Page🚀
           </Link>
         </aside>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <Image
             src={book}
             alt="book"
@@ -39,7 +58,7 @@ export default function Home() {
           className="text-base bg-white w-fit mx-auto px-3 py-1 rounded-full"
           initial={{ opacity: 0, scale: 0.7 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3, type: "easeOut" }}
+          transition={{ duration: 0.3, type: "easeOut", delay: 0.2 }}
         >
           Effective Learning
         </motion.p>
@@ -71,29 +90,51 @@ export default function Home() {
         </article>
       </section>
       <section className="my-32 text-center w-full md:px-24 px-5">
-        <h1 className="text-4xl font-bold">How does it work?</h1>
-        <p className="mt-3 text-lg">
+        <motion.h1
+          className="text-4xl font-bold"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={{
+            hidden: { opacity: 0, y: -20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+          }}
+        >
+          How does it work?
+        </motion.h1>
+
+        <motion.p
+          className="mt-3 text-lg"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.7, delay: 0.2 } },
+          }}
+        >
           With lots of unique blocks, you can easily build a page without any
           coding.
-        </p>
-        <ul className="steps mt-8 gap-3">
-          <li className="step step-primary">
-            <h3>Register</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          </li>
-          <li className="step step-primary">
-            <h3>Register</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          </li>
-          <li className="step">
-            <h3>Register</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          </li>
-          <li className="step">
-            <h3>Register</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          </li>
-        </ul>
+        </motion.p>
+
+        <motion.ul
+          className="steps mt-8 gap-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          {[...Array(4)].map((_, i) => (
+            <motion.li
+              key={i}
+              className={`step ${i < 2 ? "step-primary" : ""}`}
+              variants={itemVariants}
+            >
+              <h3>Step {i + 1}</h3>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </motion.li>
+          ))}
+        </motion.ul>
       </section>
       <section className="w-auto mx-5 md:mx-12 my-12 h-96 rounded-xl shadow-md bg-gray-100 p-3 md:p-5">
         <section className="md:w-1/2 mt-7 lg:mt-12 md:mt-3 ml-5">
@@ -162,10 +203,15 @@ const CardLearning = ({
   description: string;
 }) => {
   return (
-    <main className="bg-white rounded-lg p-5 shadow-sm">
+    <motion.main
+      className="bg-white rounded-lg p-5 shadow-sm w-[300px]"
+      initial={{ opacity: 0, marginLeft: -30 }}
+      whileInView={{ opacity: 1, marginLeft: 0 }}
+      transition={{ duration: 0.3, type: "easeOut", delay: 0.3 }}
+    >
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="mt-1">{description}</p>
-    </main>
+    </motion.main>
   );
 };
 
